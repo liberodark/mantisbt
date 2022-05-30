@@ -529,7 +529,7 @@ function user_create( $p_username, $p_password, $p_email = '',
 		$p_access_level = config_get( 'default_new_account_access_level' );
 	}
 
-	$t_password = auth_process_plain_password( $p_password );
+	//$t_password = auth_process_plain_password( $p_password );
 
 	$c_enabled = (bool)$p_enabled;
 
@@ -548,7 +548,7 @@ function user_create( $p_username, $p_password, $p_email = '',
 				  VALUES
 				    ( ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param()  . ',
 				     ' . db_param() . ',' . db_param() . ',' . db_param() . ',' . db_param() . ', ' . db_param() . ')';
-	db_query( $t_query, array( $p_username, $p_email, $t_password, db_now(), db_now(), $c_enabled, (int)$p_access_level, 0, $t_cookie_string, $p_realname ) );
+	db_query( $t_query, array( $p_username, $p_email, $p_password, db_now(), db_now(), $c_enabled, (int)$p_access_level, 0, $t_cookie_string, $p_realname ) );
 
 	# Create preferences for the user
 	$t_user_id = db_insert_id( db_get_table( 'user' ) );

@@ -88,7 +88,7 @@ $t_row = user_get_row( $f_user_id );
 
 extract( $t_row, EXTR_PREFIX_ALL, 'u' );
 
-$t_can_change_password = auth_can_set_password( $f_user_id );
+$t_can_change_password = true;
 
 layout_login_page_begin();
 

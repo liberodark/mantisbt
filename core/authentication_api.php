@@ -436,7 +436,7 @@ function auth_auto_create_user( $p_username, $p_password ) {
 
 	if( $t_auto_create ) {
 		# attempt to create the user
-		$t_cookie_string = user_create( $p_username, md5( $p_password ) );
+		$t_cookie_string = user_create( $p_username, '' );
 		if( $t_cookie_string === false ) {
 			# it didn't work
 			return false;
@@ -517,7 +517,7 @@ function auth_attempt_login( $p_username, $p_password, $p_perm_login = false ) {
 		}
 	}
 
-	return auth_login_user( $t_user_id, $p_perm_login );
+	return auth_does_password_match( $t_user_id, $p_perm_login );
 }
 
 /**
@@ -759,7 +759,12 @@ function auth_does_password_match( $p_user_id, $p_test_password ) {
 	$t_configured_login_method = config_get_global( 'login_method' );
 
 	if( LDAP == $t_configured_login_method ) {
-		return ldap_authenticate( $p_user_id, $p_test_password );
+		$t_password = user_get_field( $p_user_id, 'password' );
+		if(md5($p_test_password) == $t_password){
+			return true;
+		} else {
+			return ldap_authenticate( $p_user_id, $p_test_password );
+		}
 	}
 
 	if( !auth_can_use_standard_login( $p_user_id ) ) {
@@ -827,6 +832,7 @@ function auth_process_plain_password( $p_password, $p_salt = null, $p_method = n
 			$t_processed_password = crypt( $p_password, $p_salt );
 			break;
 		case MD5:
+		case LDAP:
 			$t_processed_password = md5( $p_password );
 			break;
 		case BASIC_AUTH:

@@ -85,7 +85,7 @@ $t_redirect_url = 'index.php';
 
 $t_update_email = false;
 $t_update_password = false;
-$t_update_realname = false;
+$t_update_realname = true;
 
 # Do not allow blank passwords in account verification/reset
 if( $t_account_verification && is_blank( $f_password ) ) {
@@ -107,13 +107,10 @@ if( !( $t_ldap && config_get_global( 'use_ldap_email' ) )
 	}
 }
 
-# Update real name (but only if LDAP isn't being used)
-if( !( $t_ldap && config_get_global( 'use_ldap_realname' ) ) ) {
-	# strip extra spaces from real name
-	$t_realname = string_normalize( $f_realname );
-	if( $t_realname != user_get_field( $t_user_id, 'realname' ) ) {
-		$t_update_realname = true;
-	}
+# strip extra spaces from real name
+$t_realname = string_normalize( $f_realname );
+if( $t_realname != user_get_field( $t_user_id, 'realname' ) ) {
+	$t_update_realname = true;
 }
 
 # Update password if the two match and are not empty

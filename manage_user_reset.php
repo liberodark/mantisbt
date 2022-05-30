@@ -63,21 +63,14 @@ form_security_purge( 'manage_user_reset' );
 layout_page_header( null, $t_redirect_url );
 layout_page_begin( 'manage_overview_page.php' );
 
-switch( $t_result['action'] ) {
-	case UserResetPasswordCommand::RESULT_RESET:
-		if(    ( ON == config_get( 'send_reset_password' ) )
-			&& ( ON == config_get( 'enable_email_notification' ) )
-		) {
-			# Password reset confirmation sent by email
-			html_operation_successful( $t_redirect_url, lang_get( 'account_reset_msg' ) );
-		} else {
-			# Email notification disabled, password set to blank
-			html_operation_successful( $t_redirect_url, lang_get( 'account_reset_msg2' ) );
-		}
-		break;
-	case UserResetPasswordCommand::RESULT_UNLOCK:
-		html_operation_successful( $t_redirect_url, lang_get( 'account_unlock_msg' ) );
-		break;
+if(   ( ON == config_get( 'send_reset_password' ) )
+	&& ( ON == config_get( 'enable_email_notification' ) )
+) {
+	# Password reset confirmation sent by email
+	html_operation_successful( $t_redirect_url, lang_get( 'account_reset_msg' ) );
+} else {
+	# Email notification disabled, password set to blank
+	html_operation_successful( $t_redirect_url, lang_get( 'account_reset_msg2' ) );
 }
 
 layout_page_end();

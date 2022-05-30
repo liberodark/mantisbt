@@ -229,7 +229,6 @@ print_manage_menu( 'manage_user_page.php' );
 # User action buttons: RESET/UNLOCK and DELETE
 
 $t_reset = $t_user['id'] != auth_get_current_user_id()
-	&& auth_can_set_password( $t_user['id'] )
 	&& user_is_enabled( $t_user['id'] )
 	&& !user_is_protected( $t_user['id'] );
 $t_unlock = !user_is_login_request_allowed( $t_user['id'] );
